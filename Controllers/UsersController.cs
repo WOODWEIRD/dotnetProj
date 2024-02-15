@@ -1,14 +1,13 @@
 ﻿using API.Data;
 using API.Entites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
-
-[ApiController] //send a req from angular client 
-[Route("api/[controller]")] //to hit this controller
-public class UsersController : ControllerBase
+public class UsersController : BaseApiController
 {
+
     private readonly DataContext _context;
 
     public UsersController(DataContext context)
@@ -23,7 +22,7 @@ public class UsersController : ControllerBase
         var users = await _context.Users.ToListAsync();
         return users; // to get this list of users
     }
-
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<AppUser>> GetUser(int id)
     {
