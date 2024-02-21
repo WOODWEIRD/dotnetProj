@@ -6,7 +6,7 @@ public class MemeberDto
     public string UserName { get; set; }
     public string PhotoUrl { get; set; }
     public int age { get; set; }
-    public string KnowAs { get; set; }
+    public string KnownAs { get; set; }
     public DateTime Created { get; set; }
     public DateTime LastActive { get; set; }
     public string Introduction { get; set; }
