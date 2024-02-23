@@ -1,4 +1,6 @@
-﻿using API.Interfaces;
+﻿using System.Security.Claims;
+using API.DTOs;
+using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,4 +32,18 @@ public class UsersController : BaseApiController
     {
         return await _userRepository.GetMemeberAsync(username);
     }
+
+    [HttpPut]
+    public async Task<ActionResult> updateUser(MemberUpdateDto memberUpdateDto)
+    {
+        var username = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var user = await _userRepository.GetUserByUsername(username);
+        if (user == null) return NotFound();
+        _mapper.Map(memberUpdateDto, user);
+        if (await _userRepository.SaveAllAsync()) return NoContent();
+        return BadRequest("failed update");
+
+    }
+
+
 }
