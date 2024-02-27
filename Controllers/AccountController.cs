@@ -15,7 +15,9 @@ namespace API.Controllers
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
 
-        public AccountController(DataContext context, ITokenService tokenService)
+        public AccountController(DataContext context,
+         ITokenService tokenService
+         )
         {
             _context = context;
             _tokenService = tokenService;
@@ -40,16 +42,19 @@ namespace API.Controllers
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user)
             };
-
         }
         private async Task<bool> UserExists(string username)
         {
             return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
+
+
+
+
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x =>
+            var user = await _context.Users.Include(p => p.Photos).SingleOrDefaultAsync(x =>
             x.UserName == loginDto.Username);
             if (user == null) return Unauthorized("invalid username");
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -61,8 +66,10 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
-            }; ;
+                Token = _tokenService.CreateToken(user),
+                photoUrl = user.Photos.FirstOrDefault(x => x.IsMain).Url
+
+            };
         }
     }
 };
