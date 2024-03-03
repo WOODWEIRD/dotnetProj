@@ -11,7 +11,7 @@ public class RegisterDto
     [StringLength(20, MinimumLength = 4)]
     public string Password { get; set; }
     [Required] public string knownAs { get; set; }
-    [Required] public string gender { get; set; }
+    [Required] public string Gender { get; set; }
     [Required] public DateOnly? dateOfBirth { get; set; }
     //optional to make required work otherwise validators wont work
     //therefore min age of 18 wont take action
