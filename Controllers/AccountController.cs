@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using API.Data;
-using API.DTOs;
+﻿using API.DTOs;
 using API.Entites;
 using API.Interfaces;
 using AutoMapper;
@@ -79,8 +77,6 @@ public class AccountController : BaseApiController
 
         var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
         if (!result) return Unauthorized("invalid password");
-
-
 
         return new UserDto
         {

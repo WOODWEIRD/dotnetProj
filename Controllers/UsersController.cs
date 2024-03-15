@@ -47,7 +47,7 @@ public class UsersController : BaseApiController
         return Ok(users);
 
     }
-    [Authorize(Roles = "Mod")]
+    [Authorize(Roles = "Member")]
     [HttpGet("{username}")]
     public async Task<ActionResult<MemeberDto>> GetUser(string username)
     {
